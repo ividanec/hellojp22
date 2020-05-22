@@ -145,7 +145,7 @@ order by 1,2;
 
 # 6. zadatak
 
-select a.carape, a.kratkamajica 
-from zarucnik a
-right join zarucnik_punica b on a.sifra=b.zarucnik;
+select b.carape, b.kratkamajica 
+from zarucnik_punica a
+right join zarucnik b on b.sifra=a.zarucnik;
 
