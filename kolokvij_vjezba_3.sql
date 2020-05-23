@@ -144,13 +144,15 @@ where carape like '%ana%';
 
 # 5 zad
 
-select a.ogrlica, b.prviputa, e.introvertno 
-from cura a, prijatelj b, neprijatelj c
-inner join becar d on d.sifra=c.becar 
-right join brat e on c.sifra=e.neprijatelj
-where c.carape like 'a%'
+select a.ogrlica, b.prviputa, c.introvertno 
+from cura a
+right join prijatelj b on b.sifra=a.sifra 
+right join brat c on c.sifra=b.brat 
+inner join neprijatelj d on d.sifra=c.neprijatelj 
+inner join becar e on e.sifra=d.becar 
+where d.carape like 'a%'
 and
-d.novcica!='28'
+e.novcica!='28'
 order by introvertno desc;
 
 
