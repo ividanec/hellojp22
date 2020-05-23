@@ -153,7 +153,7 @@ inner join becar e on e.sifra=d.becar
 where d.carape like 'a%'
 and
 e.novcica!='28'
-order by introvertno desc;
+order by c.introvertno desc;
 
 
 # 6 zad
