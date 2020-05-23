@@ -139,7 +139,7 @@ delete from prijatelj where haljina> 'AB';
 # 4 zad
 
 select suknja from sestra 
-where prviputa = null;
+where prviputa = 0 ;
 
 # 5 zad
 
