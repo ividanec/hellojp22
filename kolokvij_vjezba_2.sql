@@ -134,10 +134,12 @@ or eura!='40';
 
 # 5. zadatak
 
-select a.prviputa, b.eura,  c.vesta
-from punac a, svekar b,  neprijateljica c
-right join prijateljica d on d.sifra=c.prijateljica
-inner join zarucnik e on d.zarucnik=e.sifra
+select a.prviputa, b.eura, c.vesta
+from punac a
+right join svekar b on b.sifra=a.sifra 
+right join neprijateljica c on c.sifra=b.neprijateljica 
+inner join prijateljica d on d.sifra=c.prijateljica 
+inner join zarucnik e on e.sifra=d.zarucnik 
 where d.eura='84te'
 and 
 e.carape like '%ba%'
