@@ -149,7 +149,7 @@ delete from punac where vesta!='AB';
 
 # 4 zadatak
 
-select * from mladic
+select suknja from mladic
 where maraka!='7'
 or maraka!='11'
 or maraka!='18'
@@ -167,7 +167,8 @@ inner join mladic d on d.sifra=c.mladic
 inner join ostavljena e on e.sifra=d.ostavljena 
 where  d.maraka!='95te'
 and 
-e.bojakose like '%ba';
+e.bojakose like '%ba%'
+order by c.jmbag desc;
 
 # 6 zadatak
 
