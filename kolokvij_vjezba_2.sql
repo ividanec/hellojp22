@@ -143,7 +143,7 @@ inner join zarucnik e on e.sifra=d.zarucnik
 where d.eura='84te'
 and 
 e.carape like '%ba%'
-order by vesta desc;
+order by c.vesta desc;
 
 # 6. zadatak
 
