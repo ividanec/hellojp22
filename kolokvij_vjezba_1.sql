@@ -159,11 +159,13 @@ or maraka!='40';
 # 5 zadatak
 
 
-select a.vesta,b.prviputa, d.jmbag
-from sestra a,punac b, mladic c
-left join cura d on c.sifra=d.mladic
-inner join ostavljena e on e.sifra=c.ostavljena
-where  c.maraka!='95te'
+select a.vesta, b.prviputa, c.jmbag
+from sestra a
+right join punac b on b.sifra=a.sifra 
+right join cura c on c.sifra=b.cura
+inner join mladic d on d.sifra=c.mladic 
+inner join ostavljena e on e.sifra=d.ostavljena 
+where  d.maraka!='95te'
 and 
 e.bojakose like '%ba';
 
