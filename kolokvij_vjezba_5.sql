@@ -134,7 +134,7 @@ values
 
 # 2. zad
 
-update brat set drugiputa='2016-05-10';
+update brat set drugiputa='2016-04-10';
 
 # 3. zad
 
@@ -156,7 +156,7 @@ inner join becar d on d.sifra= c.becar
 inner join zarucnica e on e.sifra= d.zarucnica 
 where d.haljina like 'a%'
 and 
-e.indiferentno=1
+e.indiferentno!=0
 order by c.bojakose desc;
 
 # 6 zad
@@ -164,15 +164,3 @@ order by c.bojakose desc;
 select a.indiferentno, a.eura 
 from zarucnica a
 inner join zarucnica_snasa b on b.zarucnica=a.sifra;
-
-
-
-
-
-
-
-
-
-
-
-
