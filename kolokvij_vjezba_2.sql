@@ -140,8 +140,8 @@ right join prijateljica d on d.sifra=c.prijateljica
 inner join zarucnik e on d.zarucnik=e.sifra
 where d.eura='84te'
 and 
-e.carape='%ba%'
-order by 1,2;
+e.carape like '%ba%'
+order by vesta desc;
 
 # 6. zadatak
 
