@@ -4,161 +4,167 @@ drop database if exists kolokvij_vjezba_3;
 create database kolokvij_vjezba_3;
 use kolokvij_vjezba_3;
 
-create table decko(
-    sifra int not null primary key auto_increment,
-    suknja varchar(45) not null,
-    carape varchar(30) not null,
-    dukserica varchar(32) not null
-);
-
 create table cura(
     sifra int not null primary key auto_increment,
-    suknja varchar(35),
-    gustoca decimal(16,8),
-    ogrlica int not null,
-    narukvica int,
-    hlace varchar(40),
-    decko int
+    dukserica varchar(49),
+    maraka decimal(13,7),
+    drugiputa datetime,
+    majica varchar(49),
+    novcica decimal(15,8),
+    ogrlica int not null
 );
 
-create table djevojka(
+create table svekar(
     sifra int not null primary key auto_increment,
-    introvertno bit not null,
-    maraka decimal(18,9),
-    haljina varchar(47),
-    hlace varchar(33) not null,
-    prviputa datetime
-);
-
-create table becar_djevojka(
-    sifra int not null primary key auto_increment,
-    becar int not null,
-    djevojka int not null
-);
-
-create table becar(
-    sifra int not null primary key auto_increment,
-    vesta varchar(42) not null,
-    novcica decimal(14,9),
-    ekstroventno bit,
-    modelnaocala varchar(35) not null,
-    bojaociju varchar(44),
-    maraka decimal(16,8)
-);
-
-create table neprijatelj(
-    sifra int not null primary key auto_increment,
+    novcica decimal(16,8) not null,
+    suknja varchar(44) not null,
+    bojakose varchar(36),
     prstena int,
-    carape varchar(36),
-    nausnica int,
-    prviputa datetime,
-    stilfrizura varchar(39),
-    becar int not null
+    narukvica int not null,
+    cura int not null
 );
 
 create table brat(
     sifra int not null primary key auto_increment,
-    narukvica int,
-    introvertno bit,
-    ekstroventno bit not null,
-    vesta varchar(50) not null,
-    nausnica int not null,
-    neprijatelj int
+    jmbag char(11),
+    ogrlica int not null,
+    ekstroventno bit not null
+);
+
+create table prijatelj_brat(
+    sifra int not null primary key auto_increment,
+    prijatelj int not null,
+    brat int not null
 );
 
 create table prijatelj(
     sifra int not null primary key auto_increment,
-    kuna decimal(17,5),
-    asocijalno bit,
-    bojaociju varchar(43) not null,
-    prviputa datetime not null,
-    hlace varchar(45),
-    modelnaocala varchar(37) not null,
-    brat int
+    kuna decimal(16,10),
+    haljina varchar(37),
+    lipa decimal(13,10),
+    dukserica varchar(31),
+    indiferentno bit not null
 );
 
-alter table cura add foreign key (decko) references decko(sifra);
+create table ostavljena(
+    sifra int not null primary key auto_increment,
+    kuna decimal(17,5),
+    lipa decimal(15,6),
+    majica varchar(36),
+    modelnaocala varchar(31) not null,
+    prijatelj int
+);
 
-alter table becar_djevojka add foreign key (djevojka) references djevojka(sifra);
+create table snasa(
+    sifra int not null primary key auto_increment,
+    introvertno bit,
+    kuna decimal(15,6) not null,
+    eura decimal(12,9) not null,
+    treciputa datetime,
+    ostavljena int not null
+);
 
-alter table becar_djevojka add foreign key (becar) references becar(sifra);
+create table punica(
+    sifra int not null primary key auto_increment,
+    asocijalno bit,
+    kratkamajica varchar(44),
+    kuna decimal(13,8) not null,
+    vesta varchar(32) not null,
+    snasa int
+);
 
-alter table neprijatelj add foreign key (becar) references becar(sifra);
+alter table svekar add foreign key (cura) references cura(sifra);
 
-alter table brat add foreign key (neprijatelj) references neprijatelj(sifra);
+alter table prijatelj_brat add foreign key (brat) references brat(sifra);
 
-alter table prijatelj add foreign key (brat) references brat(sifra);
+alter table prijatelj_brat add foreign key (prijatelj) references prijatelj(sifra);
 
-# select * from djevojka;
+alter table ostavljena add foreign key (prijatelj) references prijatelj(sifra);
 
-insert into djevojka(sifra, introvertno, maraka, haljina, hlace,prviputa )
+alter table snasa add foreign key (ostavljena) references ostavljena(sifra);
+
+alter table punica add foreign key (snasa) references snasa(sifra);
+
+#select * from prijatelj;
+
+insert into prijatelj(sifra ,kuna ,haljina ,lipa ,dukserica ,indiferentno )
 values
-(null, 1, '20', 'lila', 'plave', '2012-11-11'),
-(null, 0, '200', 'plava', 'crna', '2012-02-23'),
-(null, 1, '30', 'zelena', 'zuta', '2012-01-11');
-
-#select * from becar;
-
-insert into becar(sifra, vesta,novcica,ekstroventno, modelnaocala,bojaociju, maraka )
-values
-(null, 'plava', '30', 1, 'velike', 'plava', '300'),
-(null, 'zuta', '150', 0, 'male', 'smeda', '30'),
-(null, 'crvena', '250', 1, 'pokidane', 'crna', '20');
-
-#select * from neprijatelj;
-
-insert into neprijatelj(sifra, prstena, carape, nausnica, prviputa, stilfrizura, becar )
-values
-(null, 1, 'plave', 2, '2000-02-02', 'duga kosa', 1),
-(null, 2, 'zute', 1, '2000-03-02', 'kratka kosa', 2),
-(null, 3, 'crne', 3, '2000-01-02', 'celav', 3);
+(null, '999', 'plava', '99', 'plava', 1),
+(null, '100', 'siva', '10', 'siva', 0),
+(null, '9993', 'crna', '993', 'crna', 1);
 
 #select * from brat;
 
-insert into brat(sifra, narukvica, introvertno, ekstroventno, vesta, nausnica,neprijatelj )
+insert into brat(sifra ,jmbag ,ogrlica ,ekstroventno )
 values
-(null, 1, 1, 0, 'plava', 1, 1),
-(null, 2, 0, 1, 'crna', 2, 3),
-(null, 3, 1, 0, 'smeda', 3, 2);
+(null, '73199066082', 1, 0),
+(null, '09199066082', 2, 1),
+(null, '23199066082', 3, 0);
 
-#select * from becar_djevojka;
+#select * from prijatelj_brat;
 
-insert into becar_djevojka(sifra, becar,djevojka )
+insert into prijatelj_brat(sifra ,prijatelj ,brat )
 values
-(null, 1, 2),
-(null, 2, 1),
-(null, 3,3);
+(null, 1, 1),
+(null, 2, 2),
+(null, 3, 3);
 
-#2 zad
+#select * from ostavljena;
 
-update cura set gustoca='14,76';
+insert into ostavljena(sifra,kuna,lipa ,majica ,modelnaocala ,prijatelj )
+values
+(null, '99', '999', 'plava', 'XXX', 1),
+(null, '10', '1000', 'siva', 'Zip', 2),
+(null, '993', '9993', 'crna', 'Rolex', 3);
+
+#select * from snasa;
+
+insert into snasa(sifra ,introvertno ,kuna ,eura,treciputa ,ostavljena )
+values
+(null, 1, '99', '999', '2011-11-11', 1),
+(null, 0, '111', '911', '2011-03-11', 2),
+(null, 1, '929', '929', '2013-01-11', 3);
+
+
+#provjera
+select * from punica;
+
+insert into punica(sifra ,asocijalno ,kratkamajica ,kuna ,vesta ,snasa )
+values
+(null, 1, 'plava', '99', 'plava', 1);
+# 2 zad
+
+update svekar set suknja='Osijek';
 
 # 3 zad
 
-delete from prijatelj where asocijalno=false;
+delete from punica where kratkamajica ='AB';
 
 # 4 zad
 
-select nausnica from neprijatelj
-where carape like '%ana%';
+select majica from ostavljena 
+where lipa !='9'
+or lipa !='10'
+or lipa !='20'
+or lipa !='30'
+or lipa !='35';
 
 # 5 zad
 
-select a.ogrlica, b.prviputa, c.introvertno 
-from cura a
-right join prijatelj b on b.sifra=a.sifra 
-right join brat c on c.sifra=b.brat 
-inner join neprijatelj d on d.sifra=c.neprijatelj 
-inner join becar e on e.sifra=d.becar 
-where d.carape like 'a%'
-and
-e.novcica!='28'
-order by c.introvertno desc;
-
+select a.ekstroventno, f.vesta, e.kuna
+from brat a
+inner join prijatelj_brat b on a.sifra=b.brat 
+inner join prijatelj c on c.sifra=b.prijatelj 
+inner join ostavljena d on c.sifra=d.prijatelj 
+inner join snasa e on d.sifra=e.ostavljena 
+inner join punica f on e.sifra=f.snasa 
+where d.lipa !='91'
+and 
+c.haljina like '%ba%'
+order by e.kuna desc;
 
 # 6 zad
 
-select a.novcica, a.ekstroventno 
-from becar a
-inner join becar_djevojka b on a.sifra=b.becar;
-
+select a.haljina, a.lipa
+from prijatelj a
+left join prijatelj_brat b on a.sifra=b.sifra;
