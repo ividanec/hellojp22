@@ -4,163 +4,160 @@ drop database if exists kolokvij_vjezba_5;
 create database kolokvij_vjezba_5;
 use kolokvij_vjezba_5;
 
-create table sestra(
+create table zarucnik(
     sifra int not null primary key auto_increment,
-    kratkamajica varchar(50) not null,
-    bojaociju varchar(30),
-    haljina varchar(44),
-    treciputa datetime
+    jmbag char(11),
+    lipa decimal(12,8),
+    indiferentno bit not null
 );
 
-create table brat(
+create table mladic(
     sifra int not null primary key auto_increment,
-    kuna decimal(14,9),
-    drugiputa datetime not null,
-    hlace varchar(46),
-    jmbag char(11),
-    sestra int not null
+    kratkamajica varchar(48) not null,
+    haljina varchar(30) not null,
+    asocijalno bit,
+    zarucnik int
 );
 
 create table cura(
     sifra int not null primary key auto_increment,
-    carape varchar(47) not null,
-    bojakose varchar(50),
-    bojaociju varchar(30),
-    majica varchar(46) not null,
-    eura decimal(13,8) not null,
-    zarucnik int not null
+    carape varchar(41) not null,
+    maraka decimal(17,10) not null,
+    asocijalno bit,
+    vesta varchar(47) not null
 );
 
-create table zarucnik(
+create table svekar_cura(
     sifra int not null primary key auto_increment,
-    vesta varchar(49),
-    bojakose varchar(42),
-    eura decimal(18,6) not null,
-    gustoca decimal(17,10) not null,
-    suknja varchar(45),
-    dukserica varchar(42),
-    becar int
+    svekar int not null,
+    cura int not null
 );
 
-create table becar(
+create table svekar(
     sifra int not null primary key auto_increment,
-    treciputa datetime,
-    haljina varchar(38) not null,
-    prstena int,
-    narukvica int not null,
-    eura decimal(17,5),
-    zarucnica int not null
-);
-
-create table zarucnica(
-    sifra int not null primary key auto_increment,
+    bojakose varchar(33),
+    majica varchar(31),
+    carape varchar(31) not null,
+    haljina varchar(43),
     narukvica int,
-    indiferentno int not null,
-    eura decimal(14,5),
-    lipa decimal(14,7) not null,
-    kuna decimal(13,5),
-    nausnica int
+    eura decimal(14,5) not null
 );
 
-create table zarucnica_snasa(
+create table punac(
     sifra int not null primary key auto_increment,
-    zarucnica int not null,
-    snasa int not null
+    dukserica varchar(33),
+    prviputa datetime not null,
+    majica varchar(36),
+    svekar int not null
 );
 
-create table snasa(
+create table punica(
     sifra int not null primary key auto_increment,
-    narukvica int not null,
-    lipa decimal(16,5) not null,
-    bojakose varchar(42) not null,
-    bojaociju varchar(38)
+    hlace varchar(43) not null,
+    nausnica int not null,
+    ogrlica int,
+    vesta varchar(49) not null,
+    modelnaocala varchar(31) not null,
+    treciputa datetime not null,
+    punac int not null
 );
 
-alter table brat add foreign key (sestra) references sestra(sifra);
+create table ostavljena(
+    sifra int not null primary key auto_increment,
+    majica varchar(33),
+    ogrlica int not null,
+    carape varchar(44),
+    stilfrizura varchar(42),
+    punica int not null
+);
 
-alter table cura add foreign key (zarucnik) references zarucnik(sifra);
+alter table mladic add foreign key (zarucnik) references zarucnik(sifra);
 
-alter table zarucnik add foreign key (becar) references becar(sifra);
+alter table svekar_cura add foreign key (cura) references cura(sifra);
 
-alter table becar add foreign key (zarucnica) references zarucnica(sifra);
+alter table svekar_cura add foreign key (svekar) references svekar(sifra);
 
-alter table zarucnica_snasa add foreign key (zarucnica) references zarucnica(sifra);
+alter table punac add foreign key (svekar) references svekar(sifra);
 
-alter table zarucnica_snasa add foreign key (snasa) references snasa(sifra);
+alter table punica add foreign key (punac) references punac(sifra);
 
+alter table ostavljena add foreign key (punica) references punica(sifra);
 
+#select * from cura;
 
-# select * from snasa;
-
-insert into snasa(sifra,narukvica,lipa,bojakose,bojaociju )
+insert into cura(sifra ,carape ,maraka ,asocijalno ,vesta )
 values
-(null, 1, '20', 'plava', 'plava'),
-(null, 2, '200', 'crna', 'smeda'),
-(null, 1, '2000', 'smeda', 'crna');
+(null, 'plave', '300', 1, 'plava'),
+(null, 'siva', '200', 0, 'siva'),
+(null, 'crna', '1200', 1, 'crna');
 
-# select * from zarucnica;
+#select * from svekar;
 
-insert into zarucnica(sifra, narukvica,indiferentno,eura,lipa ,kuna ,nausnica )
+insert into svekar(sifra ,bojakose ,majica ,carape ,haljina ,narukvica ,eura )
 values
-(null, 1, 0, '200', '20', '300', 1),
-(null, 2, 1, '20', '200', '3000', 2),
-(null, 3, 0, '2000', '200', '30', 3);
+(null, 'plava', 'plava', 'plave', 'plava', 1, '300'),
+(null, 'siva', 'siva', 'sive', 'siva', 2, '200'),
+(null, 'crna', 'crna', 'crne', 'crna', 3, '1300');
 
-# select * from zarucnica_snasa;
+#select * from svekar_cura;
 
-insert into zarucnica_snasa(sifra,zarucnica,snasa )
+insert into svekar_cura(sifra , svekar ,cura )
 values
-(null, 1, 2),
-(null, 2, 1),
+(null, 1, 1),
+(null, 2, 2),
 (null, 3, 3);
 
-# select * from becar;
+#select * from punac;
 
-insert into becar(sifra,treciputa,haljina ,prstena ,narukvica ,eura ,zarucnica )
+insert into punac(sifra ,dukserica ,prviputa ,majica ,svekar )
 values
-(null, '2011-11-11', 'plava', 1, 1, '300', 1),
-(null, '2013-03-11', 'zelena', 2, 2, '3000', 2),
-(null, '2011-04-11', 'smeda', 1, 1, '30', 3);
+(null, 'plava', '2011-02-11', 'plava', 1),
+(null, 'siva', '2013-11-11', 'siva', 2),
+(null, 'crna', '2020-01-11', 'crna', 3);
 
-# select * from zarucnik;
+#select * from punica;
 
-insert into zarucnik(sifra ,vesta ,bojakose ,eura ,gustoca ,suknja ,dukserica ,becar )
+insert into punica(sifra ,hlace ,nausnica ,ogrlica ,vesta ,modelnaocala ,treciputa ,punac )
 values
-(null, 'plava', 'plava', '300', '20', 'plava', 'plava', 1),
-(null, 'bijela', 'bijela', '3000', '200', 'bijela', 'bijela', 2),
-(null, 'plava', 'crna', '30', '20', 'crna', 'crna', 3);
+(null, 'plave', 1, 2, 'plava', 'XXX', '2020-10-28', 1),
+(null, 'siva', 2, 1, 'siva', 'Zip', '2013-03-28', 2),
+(null, 'crna', 3, 10, 'crna', 'RB', '2020-01-09', 3);
 
+#select * from ostavljena;
 
+insert into ostavljena(sifra ,majica ,ogrlica ,carape ,stilfrizura ,punica )
+values
+(null, 'plava', 1, 'plave', 'kratka', 1);
 
-# 2. zad
+# 2 zad
 
-update brat set drugiputa='2016-04-10';
+update mladic set haljina='Osijek';
 
-# 3. zad
+# 3 zad
 
-delete from cura where bojakose!='AB';
+delete from ostavljena where ogrlica=17;
 
-# 4. zad
+# 4 zad
 
-select prstena 
-from becar
-where haljina like '%ana%';
+select majica from punac
+where prviputa =0;
 
 # 5 zad
 
-select a.hlace, b.majica, c.bojakose 
-from brat a
-right join cura b on b.sifra=a.sifra 
-right join zarucnik c on c.sifra=b.zarucnik 
-inner join becar d on d.sifra= c.becar 
-inner join zarucnica e on e.sifra= d.zarucnica 
-where d.haljina like 'a%'
+select a.asocijalno, f.stilfrizura, e.nausnica 
+from cura a
+inner join svekar_cura b on a.sifra=b.cura 
+inner join svekar c on c.sifra=b.svekar 
+inner join punac d on c.sifra=d.svekar 
+inner join punica e on d.sifra=e.punac 
+inner join ostavljena f on e.sifra=f.punica 
+where d.prviputa !=0
 and 
-e.indiferentno!=0
-order by c.bojakose desc;
+c.majica like '%ba%'
+order by e.nausnica desc;
 
 # 6 zad
 
-select a.indiferentno, a.eura 
-from zarucnica a
-inner join zarucnica_snasa b on b.zarucnica=a.sifra;
+select a.majica, a.carape
+from svekar a
+left join svekar_cura b on a.sifra=b.sifra;
